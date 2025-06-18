@@ -1,0 +1,33 @@
+/* CSS untuk pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    padding: 8px 16px;
+    margin: 0 5px;
+    text-decoration: none;
+    color: #007bff;  /* Warna teks biru untuk default */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: transparent;  /* Latar belakang transparan pada tombol default */
+}
+
+.pagination a:hover {
+    background-color: #f8f9fa;  /* Background saat hover, putih muda */
+    color: #007bff;  /* Warna teks tetap biru saat hover */
+}
+
+.pagination .active a {
+    background-color: #007bff;  /* Latar belakang biru untuk tombol aktif */
+    color: white;  /* Warna teks putih saat aktif */
+    border-color: #007bff;  /* Border sesuai dengan latar belakang */
+}
+
+.pagination .disabled a {
+    color: #ccc;  /* Teks abu-abu untuk tombol yang dinonaktifkan */
+    pointer-events: none;  /* Nonaktifkan interaksi dengan tombol disabled */
+}
