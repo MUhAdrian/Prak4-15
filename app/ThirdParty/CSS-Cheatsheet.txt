@@ -1,0 +1,69 @@
+CSS Styling Cheat Sheet- Selector Dasar
+ * { }              /* Semua elemen */
+ element { }        /* Elemen spesifik, contoh: p, h1 */
+ .class { }         /* Class selector */
+ #id { }            /* ID selector */
+ element, element { }  /* Multiple elements */
+ element element { }   /* Descendant selector */
+ element > element { } /* Child selector */
+ element + element { } /* Adjacent sibling */
+ element ~ element { } /* General sibling */- Text Styling
+ color: #333;               /* Warna teks */
+ font-size: 16px;           /* Ukuran font */
+ font-family: Arial, sans-serif; /* Jenis font */
+ font-weight: bold;        /* Ketebalan font */
+ font-style: italic;       /* Gaya font */
+ text-align: center;       /* Rata teks */
+ text-decoration: none;    /* Menghapus garis bawah */
+ text-transform: uppercase;/* Kapital semua huruf */
+ letter-spacing: 1px;      /* Spasi antar huruf */
+ line-height: 1.5;         /* Jarak antar baris */- Box Model
+ width: 200px;        /* Lebar */
+ height: 100px;       /* Tinggi */
+ padding: 10px;       /* Jarak dalam */
+ margin: 20px;        /* Jarak luar */
+ border: 1px solid #000; /* Border */
+ box-sizing: border-box; /* Termasuk padding & border dalam width/height */- Background & Color
+ background-color: #f0f0f0;   /* Warna background */
+ background-image: url('img.jpg'); /* Gambar bg */
+ background-size: cover;      /* Ukuran bg */
+background-repeat: no-repeat;
+ background-position: center;
+ opacity: 0.8;                /* Transparansi */- Border & Radius
+ border: 2px dashed red;
+ border-radius: 10px;      /* Rounded corners */- Positioning
+ position: static | relative | absolute | fixed | sticky;
+ top: 10px;
+ left: 20px;
+ z-index: 100;          /* Layer order */- Flexbox
+ display: flex;
+ flex-direction: row | column;
+ justify-content: center | space-between | space-around;
+ align-items: center | flex-start | flex-end;
+ flex-wrap: wrap;
+ gap: 10px;- Grid
+ display: grid;
+ grid-template-columns: repeat(3, 1fr);  /* 3 kolom */
+ grid-template-rows: 100px auto;
+ gap: 10px;
+ grid-column: 1 / 3;
+ grid-row: 2 / 4;- Transition & Animation
+ transition: all 0.3s ease-in-out;
+ animation: slide 2s infinite;
+ @keyframes slide {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(100px); }
+ }
+- Pseudo-class & Pseudo-element
+ a:hover { color: red; }    /* Hover state */
+ button:active { transform: scale(0.95); }
+ input:focus { border-color: blue; }
+ p::first-letter { font-size: 2em; }
+ p::before { content: "* "; color: gold; }- Responsive Design
+ @media (max-width: 768px) {
+  body { background-color: lightgray; }
+ }- Utilities
+ overflow: hidden | scroll | auto;
+ visibility: hidden | visible;
+ display: none | block | inline-block | inline-flex;
+ cursor: pointer;
