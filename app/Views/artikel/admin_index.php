@@ -1,26 +1,31 @@
-<?= $this->include('template/admin_header'); ?>
+<?= $this->include('templates/header'); ?>
 
-<h2><?= $title; ?></h2>
+<h2><?= esc($title); ?></h2>
 
 <div class="row mb-3">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <form id="search-form" class="form-inline">
-            <input type="text" name="q" id="search-box" value="<?= $q; ?>" placeholder="Cari judul artikel" class="form-control mr-2">
-            <select name="kategori_id" id="category-filter" class="form-control mr-2">
+            <input type="text" name="q" id="search-box" value="<?= esc($q); ?>" placeholder="Cari judul artikel" class="form-control">
+            <select name="kategori_id" id="category-filter" class="form-control">
                 <option value="">Semua Kategori</option>
                 <?php foreach ($kategori as $k): ?>
-                    <option value="<?= $k['id_kategori']; ?>" <?= ($kategori_id == $k['id_kategori']) ? 'selected' : ''; ?>>
-                        <?= $k['nama_kategori']; ?>
+                    <option value="<?= esc($k['id_kategori']); ?>" <?= (esc($kategori_id) == esc($k['id_kategori'])) ? 'selected' : ''; ?>>
+                        <?= esc($k['nama_kategori']); ?>
                     </option>
                 <?php endforeach; ?>
             </select>
-            <input type="submit" value="Cari" class="btn btn-primary">
+            <button type="submit" class="btn btn-primary">Cari</button>
+            <a href="<?= base_url('admin/artikel/add') ?>" class="btn btn-primary">Tambah Artikel Baru</a>
         </form>
     </div>
 </div>
 
-<div id="article-container"></div>
-<div id="pagination-container"></div>
+<div id="article-container">
+    <!-- Artikel akan dimuat di sini melalui AJAX -->
+</div>
+<div id="pagination-container">
+    <!-- Pagination akan dimuat di sini melalui AJAX -->
+</div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -43,12 +48,17 @@ $(document).ready(function() {
             success: function(data) {
                 renderArticles(data.artikel);
                 renderPagination(data.pager, data.q, data.kategori_id);
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX Error: ", status, error);
+                articleContainer.html('<p class="alert alert-danger">Gagal memuat data artikel. Silakan coba lagi.</p>');
+                paginationContainer.empty();
             }
         });
     };
 
     const renderArticles = (articles) => {
-        let html = '<table class="table">';
+        let html = '<table class="table-data">';
         html += '<thead><tr><th>ID</th><th>Judul</th><th>Kategori</th><th>Status</th><th>Aksi</th></tr></thead><tbody>';
         
         if (articles.length > 0) {
@@ -58,19 +68,19 @@ $(document).ready(function() {
                         <td>${article.id}</td>
                         <td>
                             <b>${article.judul}</b>
-                            <p><small>${article.isi.substring(0, 50)}</small></p>
+                            <p><small>${article.isi.substring(0, 50)}...</small></p>
                         </td>
                         <td>${article.nama_kategori}</td>
                         <td>${article.status}</td>
                         <td>
-                            <a class="btn btn-sm btn-info" href="/admin/artikel/edit/${article.id}">Ubah</a>
-                            <a class="btn btn-sm btn-danger" onclick="return confirm('Yakin menghapus data?');" href="/admin/artikel/delete/${article.id}">Hapus</a>
+                            <a class="btn btn-primary btn-sm" href="<?= base_url('admin/artikel/edit/') ?>${article.id}">Ubah</a>
+                            <a class="btn btn-danger btn-sm" onclick="return confirm('Yakin menghapus data ini?');" href="<?= base_url('admin/artikel/delete/') ?>${article.id}">Hapus</a>
                         </td>
                     </tr>
                 `;
             });
         } else {
-            html += '<tr><td colspan="5">Tidak ada data.</td></tr>';
+            html += '<tr><td colspan="5">Tidak ada data artikel yang ditemukan.</td></tr>';
         }
         
         html += '</tbody></table>';
@@ -80,10 +90,12 @@ $(document).ready(function() {
     const renderPagination = (pager, q, kategori_id) => {
         let html = '<nav><ul class="pagination">';
         
-        pager.links.forEach(link => {
-            let url = link.url ? `${link.url}&q=${q}&kategori_id=${kategori_id}` : '#';
-            html += `<li class="page-item ${link.active ? 'active' : ''}"><a class="page-link" href="${url}">${link.title}</a></li>`;
-        });
+        if (pager && pager.links) {
+            pager.links.forEach(link => {
+                let url = link.url ? `${link.url}&q=${encodeURIComponent(q)}&kategori_id=${encodeURIComponent(kategori_id)}` : '#';
+                html += `<li class="page-item ${link.active ? 'active' : ''}"><a class="page-link" href="${url}">${link.title}</a></li>`;
+            });
+        }
         
         html += '</ul></nav>';
         paginationContainer.html(html);
@@ -93,16 +105,28 @@ $(document).ready(function() {
         e.preventDefault();
         const q = searchBox.val();
         const kategori_id = categoryFilter.val();
-        fetchData(`/admin/artikel?q=${q}&kategori_id=${kategori_id}`);
+        fetchData(`<?= base_url('admin/artikel') ?>?q=${q}&kategori_id=${kategori_id}`);
     });
 
     categoryFilter.on('change', function() {
         searchForm.trigger('submit');
     });
 
+    // Handle pagination clicks (delegated event)
+    $(document).on('click', '.pagination a.page-link', function(e) {
+        e.preventDefault();
+        const url = $(this).attr('href');
+        if (url && url !== '#') {
+            fetchData(url);
+        }
+    });
+
     // Initial load
-    fetchData('/admin/artikel');
+    fetchData('<?= base_url('admin/artikel') ?>');
 });
 </script>
 
-<?= $this->include('template/admin_footer'); ?>
+
+
+
+<?= $this->include('templates/footer'); ?>

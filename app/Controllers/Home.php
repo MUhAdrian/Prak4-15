@@ -6,6 +6,8 @@ class Home extends BaseController
 {
   public function index(): string
   {
-    return view('artikel/index');
+    $data['title'] = 'Halaman Utama';
+    $data['content'] = 'Selamat datang di halaman utama website kami.';
+    return view('home',$data);
   }
 }

@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <title>Login</title>
   <link rel="stylesheet" href="<?= base_url('/style.css'); ?>">
+  <!-- Pastikan login.css Anda juga di-merge ke style.css atau disertakan -->
+  <!-- <link rel="stylesheet" href="<?= base_url('/login.css'); ?>"> -->
 </head>
 
 <body>
@@ -15,16 +17,13 @@
     <?php endif; ?>
     <form action="" method="post">
       <div class="mb-3">
-        <label for="InputForEmail" class="form-label">Email
-          address</label>
+        <label for="InputForEmail" class="form-label">Email address</label>
         <input type="email" name="email" class="form-control"
-          id="InputForEmail" value="<?= set_value('email') ?>">
+          id="InputForEmail" value="<?= old('email') ?>">
       </div>
       <div class="mb-3">
-        <label for="InputForPassword" class="form
-label">Password</label>
-        <input type="password" name="password" class="form
-control" id="InputForPassword">
+        <label for="InputForPassword" class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" id="InputForPassword">
       </div>
       <button type="submit" class="btn btn-primary">Login</button>
     </form>
